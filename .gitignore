@@ -1,9 +1,13 @@
-.cache
+#eclispe project files
 .classpath
-.idea
-out
 .project
 .settings
-.settings/*
+#maven build folder
 target
+#Intellj Idea project files
+.idea
 *.iml
+#gedit backup files
+*~
+#scalaide (eclipse plugin) project file
+.cache
