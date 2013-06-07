@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders._
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders._
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
+import org.junit.Before
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @WebAppConfiguration
@@ -28,6 +29,7 @@ class HelloWorldControllerTest {
 
   var mockMvc: MockMvc = null
 
+  @Before
   def setup() {
     mockMvc = webAppContextSetup(wac).build();
   }
