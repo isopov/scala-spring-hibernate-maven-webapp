@@ -29,5 +29,5 @@ class HomePageController {
 
   @RequestMapping(value = Array("/home"), method = Array(GET))
   def loadCustomers() =
-    new ModelAndView("home", "customers", customerRepository.getAll)
+    new ModelAndView("home", "customers", customerRepository.findAll)
 }

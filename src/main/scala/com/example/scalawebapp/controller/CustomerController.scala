@@ -27,6 +27,8 @@ import javax.validation.Valid
 import org.springframework.validation.BindingResult
 import collection.JavaConversions
 
+import java.{lang => jl}
+
 @Controller
 class CustomerController {
 
@@ -47,15 +49,15 @@ class CustomerController {
     } else {
       val newCustomer = new Customer
       customerData.copyTo(newCustomer)
-      "redirect:/customers/" + customerRepository.save(newCustomer) + ".html"
+      "redirect:/customers/" + customerRepository.save(newCustomer).id + ".html"
     }
   }
 
   @RequestMapping(value = Array("/customers/{customerId}"), method = Array(GET))
   def viewCustomer(
-        @PathVariable customerId: Long,
+        @PathVariable customerId: java.lang.Long,
         @RequestParam(required = false) edit: String) = {
-    val customer: Customer = customerRepository.get(customerId)
+    val customer: Customer = customerRepository.findOne(customerId)
     if (edit == null) {
       new ModelAndView("customer/customer-view", "customer", customer)
     }
@@ -66,15 +68,15 @@ class CustomerController {
 
   @RequestMapping(value = Array("/customers/{customerId}"), method = Array(POST))
   def editCustomer(
-        @PathVariable customerId: Long,
+        @PathVariable customerId: jl.Long,
         @Valid @ModelAttribute("customerData") customerData: CustomerPageData,
         bindingResult: BindingResult): ModelAndView = {
-    val customer = customerRepository.get(customerId)
+    val customer = customerRepository.findOne(customerId)
     if (bindingResult.hasErrors) {
       new ModelAndView("customer/customer-edit", "customer", customer)
     } else {
       customerData.copyTo(customer)
-      customerRepository.update(customer)
+      customerRepository.save(customer)
       new ModelAndView("redirect:/customers/{customerId}.html")
     }
   }
@@ -87,7 +89,7 @@ class CustomerController {
 
   @RequestMapping(value = Array("/customers"), method = Array(DELETE))
   def deleteAllCustomers() = {
-    for (c: Customer <- JavaConversions.asScalaBuffer(customerRepository.getAll)) {
+    for (c: Customer <- JavaConversions.asScalaIterable(customerRepository.findAll())) {
       customerRepository.delete(c.id)
     }
     "redirect:/"

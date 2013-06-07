@@ -18,7 +18,7 @@ import javax.persistence.{ MappedSuperclass, GeneratedValue, Id }
 abstract class AbstractEntity {
   @Id
   @GeneratedValue
-  var id: Long = 0
+  var id: java.lang.Long = 0
 
-  def getId: Long = id
+  def getId: java.lang.Long = id
 }
