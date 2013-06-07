@@ -1,13 +1,19 @@
 package com.example.scalawebapp.controller
 
-import org.junit.runner.RunWith
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.web.WebAppConfiguration
-import org.springframework.test.context.ContextConfiguration
+import org.hamcrest.CoreMatchers.notNullValue
+import org.junit.Assert.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.junit.Assert._
-import org.hamcrest.CoreMatchers._
+import org.springframework.stereotype.Controller
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.web.context.WebApplicationContext
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.setup.MockMvcBuilders._
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders._
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 @WebAppConfiguration
@@ -15,10 +21,23 @@ import org.hamcrest.CoreMatchers._
 class HelloWorldControllerTest {
 
   @Autowired
-  val helloWorldController : HelloWorldController = null
-  
+  val wac: WebApplicationContext = null
+
+  @Autowired
+  val helloWorldController: HelloWorldController = null
+
+  var mockMvc: MockMvc = null
+
+  def setup() {
+    mockMvc = webAppContextSetup(wac).build();
+  }
+
   @Test
-  def shouldSayHelllo() {
-	  assertThat(helloWorldController, notNullValue())
+  def shouldSayHello() {
+
+    mockMvc.perform(get("/hello"))
+      .andExpect(status().isOk())
+
+    assertThat(helloWorldController, notNullValue())
   }
 }
