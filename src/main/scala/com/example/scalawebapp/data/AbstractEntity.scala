@@ -13,12 +13,13 @@
 package com.example.scalawebapp.data
 
 import javax.persistence.{ MappedSuperclass, GeneratedValue, Id }
+import java.{lang => jl}
 
 @MappedSuperclass
 abstract class AbstractEntity {
   @Id
   @GeneratedValue
-  var id: java.lang.Long = 0
+  var id: jl.Long = 0
 
-  def getId: java.lang.Long = id
+  def getId: jl.Long = id
 }
